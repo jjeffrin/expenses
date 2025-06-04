@@ -42,9 +42,9 @@ class DashboardPage extends StatelessWidget {
       appBar: AppBar(title: Text("expenses.")),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => const AddExpensePage()),
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => const AddExpensePage(),
           );
         },
         label: Text("Log Expense"),
@@ -104,14 +104,35 @@ class DashboardPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 8.0),
-                      Text('\u{20B9} '"84,293.00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      Text(
+                        '\u{20B9} '
+                        "84,293.00",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Text("Remaining Usable (Usable - Expenses - Recurring)"),
                       SizedBox(height: 8.0),
-                      Text('\u{20B9} '"1,08,242.00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                      Text(
+                        '\u{20B9} '
+                        "1,08,242.00",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                       Text("Usable (Usable - Recurring)"),
                       SizedBox(height: 8.0),
-                      Text('\u{20B9} '"1,47,200.00", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-                      Text("Total (Income)")
+                      Text(
+                        '\u{20B9} '
+                        "1,47,200.00",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text("Total (Income)"),
                     ],
                   ),
                 ),
