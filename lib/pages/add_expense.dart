@@ -13,6 +13,22 @@ class _AddExpensePageState extends State<AddExpensePage> {
   late Future<List<ExpenseTypeModel>>? expenseTypes;
   ExpenseTypeModel? selectedExpenseType;
   bool useCurrentTime = true;
+  DateTime? selectedDate;
+  TimeOfDay? selectedTime;
+  DateTime? selectedDateTime;
+
+  Future<DateTime?> _selectDate(BuildContext context) async {
+    return await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2019),
+      lastDate: DateTime(2026),
+    );
+  }
+
+  Future<TimeOfDay?> _selectTime(BuildContext context) async {
+    return await showTimePicker(context: context, initialTime: TimeOfDay.now());
+  }
 
   @override
   void initState() {
@@ -55,11 +71,60 @@ class _AddExpensePageState extends State<AddExpensePage> {
               SwitchListTile(
                 value: useCurrentTime,
                 onChanged: (newValue) {
-                  setState(() { useCurrentTime = !useCurrentTime; });
+                  setState(() {
+                    useCurrentTime = !useCurrentTime;
+                  });
                 },
-                title: Text("Use current time"),
+                title: Text("Use current date & time"),
               ),
               const SizedBox(height: 16.0),
+              if (!useCurrentTime)
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: TextField(                        
+                        readOnly: true,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hint: Text("Date & Time"),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        _selectDate(context).then((selectedVal) {
+                          if (selectedVal != null) {
+                            setState(() {
+                              selectedDate = selectedVal;
+                              selectedDateTime = DateTime(
+                                selectedVal.year,
+                                selectedVal.month,
+                                selectedVal.day,
+                              );
+                            });
+                          }
+                        });
+                      },
+                      icon: Icon(Icons.calendar_today),
+                    ),
+                    IconButton(                      
+                      onPressed: () {
+                        if (selectedDate == null) return;
+                        _selectTime(context).then((selectedVal) {
+                          if (selectedVal != null) {
+                            setState(() {
+                              selectedTime = selectedVal;
+                            });
+                          }
+                        });
+                      },
+                      icon: Icon(Icons.access_time),
+                    ),
+                  ],
+                ),
+              if (!useCurrentTime) SizedBox(height: 16.0),
               FilledButton(
                 onPressed: () {
                   // Logic to save the expense
